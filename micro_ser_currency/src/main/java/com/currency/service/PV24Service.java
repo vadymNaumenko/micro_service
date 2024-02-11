@@ -2,6 +2,8 @@ package com.currency.service;
 
 import com.currency.client.PV24CurrencyRateClient;
 import com.currency.entity.PrivatBank;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import jakarta.xml.bind.JAXBContext;
@@ -33,18 +35,18 @@ public class PV24Service {
     }
 
     private Map<String, BigDecimal> callAllByCurrentDate() {
-        String xml = client.requestByDate(LocalDate.now());
-        PrivatBank privatBank = unmarshall(xml);
+        String json = client.requestByDate(LocalDate.now().minusDays(1L));
+        PrivatBank privatBank = unmarshall(json);
         System.out.println();
         return null;
     }
 
-    private PrivatBank unmarshall(String xml){
-        try (StringReader reader = new StringReader(xml)){
-            JAXBContext context = JAXBContext.newInstance(PrivatBank.class);
-       return (PrivatBank) context.createUnmarshaller().unmarshal(reader);
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
+    private PrivatBank unmarshall(String json) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, PrivatBank.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Ошибка при разборе JSON: " + e.getMessage(), e);
         }
     }
 

@@ -2,6 +2,10 @@ package com.currency.client;
 
 
 import com.currency.entity.PrivatBank;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import jakarta.xml.bind.JAXBContext;
@@ -18,6 +22,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -44,32 +49,4 @@ public class PV24CurrencyRateClient implements HttpCurrencyDateRateClient {
                 .queryParam("date",DATE_TIME_FORMATTER.format(date)).build().toString();
     }
 
-    ///////////////////////////////////////////////////////
-
-    private final Cache<LocalDate, Map<String, BigDecimal>> cache = CacheBuilder.newBuilder().build();
-
-
-    public BigDecimal requestByCurrencyCode(String code){
-        try {
-            return cache.get(LocalDate.now(),this::callAllByCurrentDate).get(code);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Map<String, BigDecimal> callAllByCurrentDate() {
-        String xml = this.requestByDate(LocalDate.now().minusDays(1L));
-        PrivatBank privatBank = unmarshall(xml);
-        System.out.println();
-        return null;
-    }
-
-    private PrivatBank unmarshall(String xml){
-        try (StringReader reader = new StringReader(xml)){
-            JAXBContext context = JAXBContext.newInstance(PrivatBank.class);
-            return (PrivatBank) context.createUnmarshaller().unmarshal(reader);
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

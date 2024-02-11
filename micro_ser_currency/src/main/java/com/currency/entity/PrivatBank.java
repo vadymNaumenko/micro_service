@@ -1,5 +1,6 @@
 package com.currency.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PrivatBank {
-    private LocalDate date;
-    private String bank;
-    private int baseCurrency;
-    private List<ExchangeRate> exchangeRate;
 
-}
+        private String date;
+        private String bank;
+        private int baseCurrency;
+        private String baseCurrencyLit;
+        private List<ExchangeRate> exchangeRate;
+
+        }
