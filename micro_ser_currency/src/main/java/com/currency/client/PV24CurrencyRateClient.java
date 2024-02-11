@@ -1,34 +1,26 @@
 package com.currency.client;
 
-
-import com.currency.entity.PrivatBank;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.math.BigDecimal;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
+
 
 @Component
 public class PV24CurrencyRateClient implements HttpCurrencyDateRateClient {
+//    https://dou.ua/forums/topic/17511/  //todo forum
+//    https://minfin.com.ua/currency/banks/usd/ //todo mast be parser, this site have all curs banks Ukraine. minfin
 
+    //    https://bank.gov.ua/ua/open-data/api-dev //todo api nasional bank Ukraine
+//    https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5 //todo real time?
+//    https://api.privatbank.ua/#p24/exchangeArchive
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private final String base_url = "https://api.privatbank.ua/p24api/exchange_rates?json";
     @Override
