@@ -3,6 +3,7 @@ mvnw
 mvnw.cmd
 .gradle
 build/
+.mvn/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
