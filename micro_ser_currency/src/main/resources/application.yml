@@ -1,0 +1,4 @@
+
+banks:
+  private: "https://api.privatbank.ua/p24api/exchange_rates?json"
+  monoBank: "https://api.monobank.ua/bank/currency"

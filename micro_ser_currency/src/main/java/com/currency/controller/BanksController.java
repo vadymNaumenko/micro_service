@@ -1,4 +1,4 @@
-package com.currency;
+package com.currency.controller;
 
 import com.currency.service.PV24Service;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,6 @@ public class BanksController {
 
     @GetMapping("/privat_bank")
     public BigDecimal getCurrencyFromPrivatBank(){
-        return pv24Service.requestByCurrencyCode("UA");
+        return pv24Service.requestByCurrencyCode("USD");
     }
 }
