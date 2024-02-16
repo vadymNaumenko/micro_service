@@ -42,7 +42,7 @@ public class PV24Service {
     }
 
     private Map<String, BigDecimal> callAllByCurrentDate() {
-        String json = client.requestByDate(LocalDate.now().minusDays(1L)); // todo if time not is 0000
+        String json = client.requestByDate(LocalDate.now().minusDays(1L)); // todo must make if time not is 0000
         PrivatBank privatBank = unmarshall(json);
         System.out.println();
         return privatBank
