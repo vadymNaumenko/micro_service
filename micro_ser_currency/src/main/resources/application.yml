@@ -4,3 +4,7 @@ banks:
   monoBank: "https://api.monobank.ua/bank/currency"
 server:
   port: 8085
+client:
+  config:
+    privateBankUrl: "https://api.privatbank.ua/p24api/exchange_rates?json"
+    monoBankUrl: "https://api.monobank.ua/bank/currency"

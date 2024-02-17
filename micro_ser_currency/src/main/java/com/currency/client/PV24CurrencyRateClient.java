@@ -27,6 +27,7 @@ public class PV24CurrencyRateClient implements HttpCurrencyDateRateClient {
     @Value("${banks.private}")
     private String base_url;
 
+
     @Override
     public String requestByDate(LocalDate date) {
         HttpClient client = HttpClient.newHttpClient();
