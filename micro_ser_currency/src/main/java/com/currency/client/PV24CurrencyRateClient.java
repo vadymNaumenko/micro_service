@@ -1,7 +1,10 @@
 package com.currency.client;
 
+import com.currency.config.ClientConfiguration;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 
 @Component
+@RequiredArgsConstructor
 public class PV24CurrencyRateClient implements HttpCurrencyDateRateClient {
 //    https://dou.ua/forums/topic/17511/  //todo forum
 //    https://minfin.com.ua/currency/banks/usd/ //todo mast be parser, this site have all curs banks Ukraine. minfin
@@ -24,12 +28,14 @@ public class PV24CurrencyRateClient implements HttpCurrencyDateRateClient {
 //    https://api.privatbank.ua/#p24/exchangeArchive
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    @Value("${banks.private}")
-    private String base_url;
+//    @Value("${banks.private}")
+//    private String base_url;
 
+    private final ClientConfiguration clientConfiguration;
 
     @Override
     public String requestByDate(LocalDate date) {
+        String base_url = clientConfiguration.getPrivateBankUrl();
         HttpClient client = HttpClient.newHttpClient();
         String url = buildUrlRequest(base_url, date);
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
