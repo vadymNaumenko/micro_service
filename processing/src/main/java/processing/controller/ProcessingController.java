@@ -1,12 +1,10 @@
 package processing.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import processing.dto.AccountDTO;
 import processing.dto.NewAccountDTO;
+import processing.dto.PutAccountMoneyDTO;
 import processing.service.AccountService;
 
 @RestController
@@ -18,5 +16,9 @@ public class ProcessingController {
     @PostMapping("/account")
     public AccountDTO createAccount(@RequestBody NewAccountDTO dto){
         return accountService.createNewAccount(dto);
+    }
+    @PutMapping("/put")
+    public AccountDTO putMoney(@RequestBody PutAccountMoneyDTO accountMoneyDTO){
+        return accountService.addMoneyAccount(accountMoneyDTO);
     }
 }
