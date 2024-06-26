@@ -2,6 +2,8 @@ package processing.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import processing.convertor.AccountDtoConvertor;
 import processing.dto.AccountDTO;
@@ -31,6 +33,7 @@ public class AccountService {
                 .ToAccountDTO(accountRepository.save(account));
     }
 
+    @Transactional(propagation = Propagation.REQUIRED ,isolation = Isolation.REPEATABLE_READ)
     public AccountDTO addMoneyAccount(PutAccountMoneyDTO putAccountMoneyDTO){
         Optional<Account> account = accountRepository.findById(putAccountMoneyDTO.getAccountId());
        Account res = account.map(acc->{
