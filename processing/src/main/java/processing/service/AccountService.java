@@ -33,17 +33,21 @@ public class AccountService {
                 .ToAccountDTO(accountRepository.save(account));
     }
 
-    @Transactional(propagation = Propagation.REQUIRED ,isolation = Isolation.REPEATABLE_READ)
-    public AccountDTO addMoneyAccount(PutAccountMoneyDTO putAccountMoneyDTO){
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
+    public AccountDTO addMoneyAccount(PutAccountMoneyDTO putAccountMoneyDTO) {
         Optional<Account> account = accountRepository.findById(putAccountMoneyDTO.getAccountId());
-       Account res = account.map(acc->{
-         var balance = acc.getBalance().add(putAccountMoneyDTO.getMoney());
-         acc.setBalance(balance);
-         return accountRepository.save(acc);
-        })
-                .orElseThrow(()-> new IllegalArgumentException("Account with ID "+ putAccountMoneyDTO.getAccountId()+ " not found"));
+        Account res = account.map(acc -> {
+                    var balance = acc.getBalance().add(putAccountMoneyDTO.getMoney());
+                    acc.setBalance(balance);
+                    return accountRepository.save(acc);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("Account with ID " + putAccountMoneyDTO.getAccountId() + " not found"));
 
         return accountConvertor.ToAccountDTO(res);
+    }
+
+    public Account findById(Long accountId) {
+        return accountRepository.findById(accountId).orElseThrow(() -> new IllegalArgumentException("Account not found with id:" + accountId));
     }
 
 
