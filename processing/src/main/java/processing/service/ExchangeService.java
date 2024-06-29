@@ -62,9 +62,8 @@ public class ExchangeService {
         return result;
     }
     private BigDecimal exchangeThroughUa(String uuid, Account source, Account target, BigDecimal rateFrom, BigDecimal rateTo, BigDecimal amount) {
-        accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid,source.getId(),amount.negate()));
         BigDecimal ua = amount.multiply(rateFrom);
-        BigDecimal result = ua.divide(rateTo,6,RoundingMode.HALF_DOWN); // 4
+        BigDecimal result = ua.divide(rateTo,4,RoundingMode.HALF_DOWN); // 4
         accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid,target.getId(),result));
         return result;
     }

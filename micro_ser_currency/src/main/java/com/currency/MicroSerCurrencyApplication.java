@@ -11,7 +11,6 @@ public class MicroSerCurrencyApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MicroSerCurrencyApplication.class, args);
-        System.out.println("start");
     }
 
 }

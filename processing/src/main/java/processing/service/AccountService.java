@@ -7,12 +7,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import processing.convertor.AccountDtoConvertor;
 import processing.dto.AccountDTO;
+import processing.dto.AccountFilter;
 import processing.dto.NewAccountDTO;
 import processing.dto.PutAccountMoneyDTO;
 import processing.entity.Account;
 import processing.repository.AccountRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,5 +52,7 @@ public class AccountService {
         return accountRepository.findById(accountId).orElseThrow(() -> new IllegalArgumentException("Account not found with id:" + accountId));
     }
 
-
+    public List<AccountFilter> findAllById(Long id) {
+         return accountRepository.findAllAccountByUserId(id);
+    }
 }

@@ -1,15 +1,28 @@
 package processing.dto;
 
-import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-@Setter
-@Getter
-public class AccountDTO {
-    private Long user;
+@AllArgsConstructor
+public class AccountDTO implements AccountFilter{
+    private Long userId;
     private String currency;
     private BigDecimal balance;
 
+    @Override
+    public Long getUserId() {
+        return userId;
+    }
+
+    @Override
+    public String getCurrency() {
+        return currency;
+    }
+
+    @Override
+    public BigDecimal getBalance() {
+        return balance;
+    }
 }

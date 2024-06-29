@@ -2,14 +2,12 @@ package processing.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import processing.dto.AccountDTO;
-import processing.dto.ExchangeMoneyDTO;
-import processing.dto.NewAccountDTO;
-import processing.dto.PutAccountMoneyDTO;
+import processing.dto.*;
 import processing.service.AccountService;
 import processing.service.ExchangeService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,4 +39,10 @@ public class ProcessingController {
                 exchangeMoneyDTO.getToAccountId(),
                 exchangeMoneyDTO.getMoney());
     }
+
+    @GetMapping("/account/{id}")
+    public List<AccountFilter> getAccount (@PathVariable Long id){
+        return accountService.findAllById(id);
+    }
+
 }
