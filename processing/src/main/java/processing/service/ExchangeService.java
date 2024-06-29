@@ -16,11 +16,11 @@ import java.math.RoundingMode;
 @Slf4j
 public class ExchangeService {
 
-    private static final String CURRENCY_UA = "UA";
+    private static final String CURRENCY_UA = "UAH";
     private final CurrencyService currencyService;
     private final AccountService accountService;
 
-
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public BigDecimal exchangeCurrency(String uuid, Long fromAccount, Long toAccount, BigDecimal amount) {
         Account source = accountService.findById(fromAccount);
         Account target = accountService.findById(toAccount);
@@ -48,15 +48,20 @@ public class ExchangeService {
         return result;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public BigDecimal simpleExchange(String uuid, Account source, Account target, BigDecimal amount) {
+
+    private BigDecimal simpleExchange(String uuid, Account source, Account target, BigDecimal amount) {
         accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid,source.getId(),amount.negate()));
         accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid,source.getId(),amount));
         return amount;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public BigDecimal exchangeThroughUa(String uuid, Account source, Account target, BigDecimal rateFrom, BigDecimal rateTo, BigDecimal amount) {
+    private BigDecimal exchangeWithMultiply(String uuid, Account source, Account target, BigDecimal rate, BigDecimal amount) {
+        accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid, source.getId(), amount.negate()));
+        BigDecimal result = amount.multiply(rate);
+        accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid, target.getId(), result));
+        return result;
+    }
+    private BigDecimal exchangeThroughUa(String uuid, Account source, Account target, BigDecimal rateFrom, BigDecimal rateTo, BigDecimal amount) {
         accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid,source.getId(),amount.negate()));
         BigDecimal ua = amount.multiply(rateFrom);
         BigDecimal result = ua.divide(rateTo,6,RoundingMode.HALF_DOWN); // 4
@@ -64,13 +69,8 @@ public class ExchangeService {
         return result;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public BigDecimal exchangeWithMultiply(String uuid, Account source, Account target, BigDecimal rate, BigDecimal amount) {
-        accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid, source.getId(), amount.negate()));
-        BigDecimal result = amount.multiply(rate);
-        accountService.addMoneyAccount(new PutAccountMoneyDTO(uuid, target.getId(), result));
-        return result;
-    }
+
+
 
 
 }
