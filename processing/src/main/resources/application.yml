@@ -1,6 +1,5 @@
 server:
   port: 8090
-
 spring:
   jpa:
     database: postgresql
@@ -20,7 +19,16 @@ spring:
     url: jdbc:postgresql://localhost:5433/processing
     user: postgres
     password: pass
+  application:
+    name: processing-service
 
 service:
   currency:
     url: "http://localhost:8085/currency"
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: true
