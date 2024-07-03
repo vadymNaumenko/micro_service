@@ -8,3 +8,12 @@ client:
   config:
     privateBankUrl: "https://api.privatbank.ua/p24api/exchange_rates?json"
     monoBankUrl: "https://api.monobank.ua/bank/currency"
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: true
+spring:
+  application:
+    name: currency-service
