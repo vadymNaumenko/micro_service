@@ -1,3 +1,42 @@
 spring:
   application:
-    name: gateway-service
+    name: api-gateway-service
+
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: currency-service
+          uri: ${cloud.currency-service-url}
+          predicates:
+            - Path=/currency/**
+        - id: processing-service
+          uri: ${cloud.processing-service-url}
+          predicates:
+            - Path=/processing/**
+
+server:
+  port: 8080
+
+cloud:
+  eureka-host: localhost:8761
+  zipkin-host: localhost
+  processing-service-url: http://localhost:8090
+  auth-service-url: http://localhost:9000
+  currency-service-url: http://localhost:8085
+  history-service-url: http://localhost:8010
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${cloud.eureka-host}/eureka/
+    enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
