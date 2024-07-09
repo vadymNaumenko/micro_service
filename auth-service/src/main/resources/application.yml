@@ -1,0 +1,20 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:h2:mem:auth-db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: pass
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${cloud.eureka-host}/eureka/
+    enabled: true
